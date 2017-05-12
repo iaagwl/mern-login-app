@@ -1,0 +1,9 @@
+/* selected nav */
+.selected{
+  color: green;
+}
+
+/* form validation errors */
+.has-error{
+  color: #ef5350;
+}
