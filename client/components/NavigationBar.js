@@ -9,7 +9,7 @@ export default () => {
           <NavLink to="/" exact activeClassName="selected">Home</NavLink>
         </li>
         <li>
-          <NavLink to="/about" activeClassName="selected">About</NavLink>
+          <NavLink to="/signup" activeClassName="selected">Sign up</NavLink>
         </li>
       </ul>
     </nav>
