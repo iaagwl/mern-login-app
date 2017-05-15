@@ -1,5 +1,7 @@
 import React from 'react';
-import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import TextFieldGroup from '../common/TextFieldGroup';
+import validateInput from '../../../server/shared/validations/signup';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -17,14 +19,25 @@ class SignupForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  isValid() {
+    const { errors, isValid } = validateInput(this.state);
+
+    if (!isValid) {
+      this.setState({ errors });
+    }
+    return isValid;
+  }
+
   handleSubmit(e) {
     e.preventDefault();
-    this.setState({ errors: {}, isLoading: true });
 
-    this.props.userSignupRequest(this.state).then(
-      () => {},
-      (err) => this.setState({ errors: err.response.data, isLoading: false })
-    );
+    if (this.isValid()){
+      this.setState({ errors: {}, isLoading: true });
+      this.props.userSignupRequest(this.state).then(
+        () => {},
+        (err) => this.setState({ errors: err.response.data, isLoading: false })
+      );
+    }
   }
 
   handleChange(e) {
@@ -38,49 +51,37 @@ class SignupForm extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <h1>Sign Up</h1>
 
-        <div className={classnames("form-group", { 'has-error': errors.username })}>
-          <label>Username</label>
-          <input
-            value={this.state.test}
-            onChange={this.handleChange}
-            type="text"
-            name="username"
-          />
-          {errors.username && <span>{errors.username}</span>}
-        </div>
+        <TextFieldGroup
+          error={errors.username}
+          label="Username"
+          handleChange={this.handleChange}
+          value={this.state.username}
+          field="username"
+        />
 
-        <div className={classnames("form-group", { 'has-error': errors.email })}>
-          <label>Email</label>
-          <input
-            value={this.state.test}
-            onChange={this.handleChange}
-            type="email"
-            name="email"
-          />
-          {errors.email && <span>{errors.email}</span>}
-        </div>
+        <TextFieldGroup
+          error={errors.email}
+          label="Email"
+          handleChange={this.handleChange}
+          value={this.state.email}
+          field="email"
+        />
 
-        <div className={classnames("form-group", { 'has-error': errors.password })}>
-          <label>Password</label>
-          <input
-            value={this.state.test}
-            onChange={this.handleChange}
-            type="password"
-            name="password"
-          />
-          {errors.password && <span>{errors.password}</span>}
-        </div>
+        <TextFieldGroup
+          error={errors.password}
+          label="Password"
+          handleChange={this.handleChange}
+          value={this.state.password}
+          field="password"
+        />
 
-        <div className={classnames("form-group", { 'has-error': errors.passwordConfirmation })}>
-          <label>Password Confirmation</label>
-          <input
-            value={this.state.test}
-            onChange={this.handleChange}
-            type="password"
-            name="passwordConfirmation"
-          />
-          {errors.passwordConfirmation && <span>{errors.passwordConfirmation}</span>}
-        </div>
+        <TextFieldGroup
+          error={errors.passwordConfirmation}
+          label="Password Confirmation"
+          handleChange={this.handleChange}
+          value={this.state.passwordConfirmation}
+          field="passwordConfirmation"
+        />
 
         <input disabled={this.state.isLoading}
           type="submit"
@@ -91,7 +92,7 @@ class SignupForm extends React.Component {
 }
 
 SignupForm.propTypes = {
-  userSignupRequest: React.PropTypes.func.isRequired
+  userSignupRequest: PropTypes.func.isRequired
 }
 
 export default SignupForm;
