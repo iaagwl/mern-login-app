@@ -9,6 +9,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackConfig from '../webpack.config.dev';
 
 import users from './routes/users';
+import auth from './routes/auth';
 
 const app = express();
 
@@ -27,6 +28,7 @@ mongoose.Promise = global.Promise;
 app.use(bodyParser.json());
 
 app.use('/api/users', users);
+app.use('/api/auth', auth);
 
 const compiler = webpack(webpackConfig);
 
