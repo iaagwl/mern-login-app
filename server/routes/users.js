@@ -1,17 +1,54 @@
 import express from 'express';
-import validateInput from '../shared/validations/signup';
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import commonValidations from '../shared/validations/signup';
+import isEmpty from 'lodash/isEmpty';
 
+import User from '../models/user';
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  const { errors, isValid } = validateInput(req.body);
+function validateInput(data, otherValidations) {
 
-  if (isValid) {
-    res.json({ succes: true });
-  } else {
-    res.status(400).json(errors);
-  }
+  let { errors } = otherValidations(data);
+
+  return User.find({
+    $or: [
+      {username: data.username},
+      {email: data.email}
+    ]
+  })
+  .then(user => {
+    if (user.length) {
+      if (user[0].username === data.username) {
+        errors.username = 'Sorry, username has been taken';
+      }
+      if (user[0].email === data.email) {
+        errors.email = 'Email is already registered';
+      }
+    }
+    return {
+      errors,
+      isValid: isEmpty(errors)
+    };
+  });
+
+}
+
+router.post('/', (req, res) => {
+  validateInput(req.body, commonValidations).then(({ errors, isValid }) => {
+    if (isValid) {
+      const { username, password, email } = req.body;
+      const password_digest = bcrypt.hashSync(password, 10);
+      new User({
+        username: username, email: email, password_digest: password_digest
+      }).save()
+      .then(user => res.json({ success: true }))
+      .catch(err => res.status(500).json({ error: err }));
+    } else {
+      res.status(400).json(errors);
+    }
+  });
 
 });
 
