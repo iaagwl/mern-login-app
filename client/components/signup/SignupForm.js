@@ -12,11 +12,13 @@ class SignupForm extends React.Component {
       password: '',
       passwordConfirmation: '',
       errors: {},
-      isLoading: false
+      isLoading: false,
+      invalid: false
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.checkUserExists = this.checkUserExists.bind(this);
   }
 
   isValid() {
@@ -26,6 +28,25 @@ class SignupForm extends React.Component {
       this.setState({ errors });
     }
     return isValid;
+  }
+
+  checkUserExists(e) {
+    const field = e.target.name;
+    const val = e.target.value;
+    if (val !== '') {
+      this.props.doesUserExist(val).then(res => {
+        let errors = this.state.errors;
+        let invalid;
+        if (res.data.user.length) {
+          errors[field] = 'There is user with such ' + field;
+          invalid = true;
+        } else {
+          errors[field] = '';
+          invalid = false;
+        }
+        this.setState({ errors, invalid });
+      });
+    }
   }
 
   handleSubmit(e) {
@@ -62,6 +83,7 @@ class SignupForm extends React.Component {
           error={errors.username}
           label="Username"
           handleChange={this.handleChange}
+          checkUserExists={this.checkUserExists}
           value={this.state.username}
           field="username"
         />
@@ -70,6 +92,7 @@ class SignupForm extends React.Component {
           error={errors.email}
           label="Email"
           handleChange={this.handleChange}
+          checkUserExists={this.checkUserExists}
           value={this.state.email}
           field="email"
         />
@@ -90,7 +113,7 @@ class SignupForm extends React.Component {
           field="passwordConfirmation"
         />
 
-        <input disabled={this.state.isLoading}
+        <input disabled={this.state.isLoading || this.state.invalid}
           type="submit"
         />
       </form>
@@ -100,7 +123,8 @@ class SignupForm extends React.Component {
 
 SignupForm.propTypes = {
   userSignupRequest: PropTypes.func.isRequired,
-  addFlashMassage: PropTypes.func.isRequired
+  addFlashMassage: PropTypes.func.isRequired,
+  doesUserExist: PropTypes.func.isRequired
 }
 
 SignupForm.contextTypes = {

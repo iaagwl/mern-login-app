@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-const TextFieldGroup = ({ field, value, label, error, type, handleChange }) => {
+const TextFieldGroup = ({ field, value, label, error, type, handleChange, checkUserExists }) => {
   return (
     <div>
       <div className={classnames("form-group", { 'has-error': error })}>
@@ -10,6 +10,7 @@ const TextFieldGroup = ({ field, value, label, error, type, handleChange }) => {
         <input
           value={value}
           onChange={handleChange}
+          onBlur={checkUserExists}
           type={type}
           name={field}
         />
@@ -25,7 +26,8 @@ TextFieldGroup.propTypes = {
   label: PropTypes.string.isRequired,
   error: PropTypes.string,
   type: PropTypes.string.isRequired,
-  handleChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
+  checkUserExists: PropTypes.func
 }
 
 TextFieldGroup.defaultProps = {

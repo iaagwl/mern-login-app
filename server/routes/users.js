@@ -32,8 +32,19 @@ function validateInput(data, otherValidations) {
       isValid: isEmpty(errors)
     };
   });
-
 }
+
+router.get('/:identifier', (req, res) => {
+  console.log(req.params.identifier);
+  User.find({
+    $or: [
+      {username: req.params.identifier},
+      {email: req.params.identifier}
+    ]
+  }, 'username email').then( user => {
+    res.json({ user });
+  });
+});
 
 router.post('/', (req, res) => {
   validateInput(req.body, commonValidations).then(({ errors, isValid }) => {
