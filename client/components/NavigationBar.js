@@ -11,6 +11,9 @@ export default () => {
         <li>
           <NavLink to="/signup" activeClassName="selected">Sign up</NavLink>
         </li>
+        <li>
+          <NavLink to="/login" activeClassName="selected">Login</NavLink>
+        </li>
       </ul>
     </nav>
   )

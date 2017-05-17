@@ -38,7 +38,7 @@ class SignupForm extends React.Component {
         let errors = this.state.errors;
         let invalid;
         if (res.data.user.length) {
-          errors[field] = 'There is user with such ' + field;
+          errors[field] = field + 'already exists';
           invalid = true;
         } else {
           errors[field] = '';
@@ -103,6 +103,7 @@ class SignupForm extends React.Component {
           handleChange={this.handleChange}
           value={this.state.password}
           field="password"
+          type="password"
         />
 
         <TextFieldGroup
@@ -111,6 +112,7 @@ class SignupForm extends React.Component {
           handleChange={this.handleChange}
           value={this.state.passwordConfirmation}
           field="passwordConfirmation"
+          type="password"
         />
 
         <input disabled={this.state.isLoading || this.state.invalid}

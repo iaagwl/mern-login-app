@@ -9,6 +9,7 @@ import rootReducer from './rootReducer';
 import App from './components/App';
 import HomePage from './components/HomePage';
 import SignupPage from './components/signup/SignupPage';
+import LoginPage from './components/login/LoginPage';
 
 const store = createStore(
   rootReducer,
@@ -24,6 +25,7 @@ render(
       <App>
         <Route exact path="/" component={HomePage} />
         <Route path="/signup" component={SignupPage} />
+        <Route path="/login" component={LoginPage} />
       </App>
     </Router>
   </Provider>, document.getElementById('app'));﻿
