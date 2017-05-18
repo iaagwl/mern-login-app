@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import TextFieldGroup from '../common/TextFieldGroup';
 import validateInput from '../../../server/shared/validations/login';
 import { connect } from 'react-redux';
-import { login } from '../../actions/login';
+import { login } from '../../actions/authActions';
 import { addFlashMassage } from '../../actions/flashMessages';
 
 class LoginForm extends React.Component {

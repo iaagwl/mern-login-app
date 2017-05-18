@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
       if (bcrypt.compareSync(password, user.password_digest)) {
         const token = jwt.sign({
           id: user._id,
-          username: user.name
+          username: user.username
         }, config.jwtSecret);
         res.json({ token });
       } else {

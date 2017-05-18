@@ -8,7 +8,6 @@ export function userSignupRequest(userData) {
 }
 
 export function doesUserExist(identifier) {
-  console.log('xd does user even lift');
   return dispatch => {
     return axios.get(`/api/users/${identifier}`);
   }
