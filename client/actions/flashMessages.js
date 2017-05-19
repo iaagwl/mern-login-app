@@ -1,6 +1,6 @@
 import { ADD_FLASH_MESSAGE, DELETE_FLASH_MESSAGE } from './constants';
 
-export function addFlashMassage(message) {
+export function addFlashMessage(message) {
   return {
     type: ADD_FLASH_MESSAGE,
     message

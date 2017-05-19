@@ -6,13 +6,16 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import rootReducer from './rootReducer';
 import setAuthorizationToken from './utils/setAuthorizationToken';
-import jwt from 'jsonwebtoken';
+import jwtDecode from 'jwt-decode';
 import { setCurrentUser } from './actions/authActions';
 
 import App from './components/App';
 import HomePage from './components/HomePage';
 import SignupPage from './components/signup/SignupPage';
 import LoginPage from './components/login/LoginPage';
+import NewEventPage from './components/events/NewEventPage';
+
+import requireAuth from './utils/requireAuth';
 
 const store = createStore(
   rootReducer,
@@ -24,7 +27,7 @@ const store = createStore(
 
 if (localStorage.jwtToken) {
   setAuthorizationToken(localStorage.jwtToken);
-  store.dispatch(setCurrentUser(jwt.decode(localStorage.jwtToken)));
+  store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
 }
 
 render(
@@ -34,6 +37,7 @@ render(
         <Route exact path="/" component={HomePage} />
         <Route path="/signup" component={SignupPage} />
         <Route path="/login" component={LoginPage} />
+        <Route path="/new-event" component={requireAuth(NewEventPage)} />
       </App>
     </Router>
   </Provider>, document.getElementById('app'));﻿

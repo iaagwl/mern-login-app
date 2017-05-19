@@ -18,6 +18,9 @@ class NavigationBar extends React.Component {
         <li>
           <a href="/" onClick={this.logout.bind(this)}>Logout</a>
         </li>
+        <li>
+          <NavLink to="/new-event" activeClassName="selected">New Event</NavLink>
+        </li>
       </ul>
     );
 

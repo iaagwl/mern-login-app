@@ -56,7 +56,7 @@ class SignupForm extends React.Component {
       this.setState({ errors: {}, isLoading: true });
       this.props.userSignupRequest(this.state).then(
         () => {
-          this.props.addFlashMassage({
+          this.props.addFlashMessage({
             type: 'success',
             text: 'You have signed up successfully. Welcome!'
           })
@@ -68,7 +68,6 @@ class SignupForm extends React.Component {
   }
 
   handleChange(e) {
-    // input field needs name
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -125,7 +124,7 @@ class SignupForm extends React.Component {
 
 SignupForm.propTypes = {
   userSignupRequest: PropTypes.func.isRequired,
-  addFlashMassage: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func.isRequired,
   doesUserExist: PropTypes.func.isRequired
 }
 
